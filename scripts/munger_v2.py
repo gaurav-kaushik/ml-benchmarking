@@ -15,11 +15,6 @@ import pandas as pd
 import argparse
 import sys
 
-# TODO: remove row with "Name" and "TPM" are the values -- df1 = df1[:-1]
-# TODO: first column should be the index --
-# TODO: change merger criteria on the index column
-
-
 def get_dataframe_list(files, file_index, data_type):
     """ get a list of dataframes from -f or -r """
 
