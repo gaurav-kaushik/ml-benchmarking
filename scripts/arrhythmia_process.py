@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import argparse
 import sklearn
 import pandas as pd
@@ -13,7 +14,7 @@ def main(args):
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-t", "--filetype", default='csv')
+    parser.add_argument("-f", "--filetype", default='csv')
     parser.add_argument("-s", "--save", action="store_true", default=False)
     args = vars(parser.parse_args())
 
