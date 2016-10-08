@@ -55,8 +55,7 @@ def merge_texts(files, file_index, data_type):
     # enumerate over the list, merge, and rename columns
     try:
         df = dfs[0]
-
-        print(*[df_.columns for df_ in dfs],sep='\n')
+        # print(*[df_.columns for df_ in dfs],sep='\n')
         for i, frame in enumerate(dfs[1:]):
             if data_type == 'gene':
                 try:

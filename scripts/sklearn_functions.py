@@ -91,12 +91,12 @@ def autotune_alpha(model, X_train, X_test, y_train, y_test):
 def train_without_cv_all(models, X, y):
     X_train, X_test, y_train, y_test = train_test_split(X, y)
     for k, v in models.items():
-        print("\t", k, ":", score_model(v.fit(X_train, y_train), X_test, y_test))
+        print("\t", k, ":", "%0.2f, %0.2f" % (score_model(v.fit(X_train, y_train), X_test, y_test)))
     return models
 
 def train_without_cv(model, X, y):
     X_train, X_test, y_train, y_test = train_test_split(X, y)
-    print("\t", model, ":", score_model(model.fit(X_train, y_train), X_test, y_test))
+    print("\t", model, ":", "%0.2f, %0.2f" % (score_model(model.fit(X_train, y_train), X_test, y_test)))
     return model
 
 
@@ -113,14 +113,17 @@ def add_noise_normal(X, degree=1):
 
 """ Plots """
 
-def plot_ROC(model, X, y, cv_fold=5):
+def plot_ROC(model, X, y, cv_fold=5, png_filename=None):
     # Set up mean true and false positive rates
-    mean_tpr, mean_fpr = 0, np.linspace(0, 1, 100)
+    mean_tpr, mean_fpr = 0, np.linspace(0, 1, 101) # np.linspace(start, stop, datapoints)
 
     # Set the matplotlib colorwheel as a cycle
     colors = itertools.cycle(list(cnames.keys()))
     # Set the cross-validation fold
     skf = StratifiedKFold(cv_fold)  # list(skf.split(X,y)) returns list of len n_splits
+
+    # Create new plot
+    fig = plt.figure()
 
     # loop over each split in the data and plot the ROC
     for idx, val in enumerate(zip(skf.split(X, y), colors)):
@@ -137,7 +140,6 @@ def plot_ROC(model, X, y, cv_fold=5):
     mean_tpr[-1] = 1.0
     mean_auc = auc(mean_fpr, mean_tpr)
     plt.plot(mean_fpr, mean_tpr, color='k', linestyle='--', label='Mean ROC (area = %0.2f)' % mean_auc, lw=4)
-
     # Plot chance (tpr = fpr)
     plt.plot([0, 1], [0, 1], linestyle='--', lw=1, color='k', label='Chance')
 
@@ -148,7 +150,11 @@ def plot_ROC(model, X, y, cv_fold=5):
     plt.ylabel('True Positive Rate')
     plt.title('Receiver operating characteristic curve ({}-fold CV)'.format(cv_fold))
     plt.legend(loc="lower right")
-    plt.show()
+
+    if not png_filename:
+        plt.show()
+    else:
+        plt.savefig(png_filename+'.png')
 
     return
 

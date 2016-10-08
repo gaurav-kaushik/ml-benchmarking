@@ -38,7 +38,9 @@ if __name__ == "__main__":
     clas_models = train_without_cv_all(classifiers(), X_clas_bin, y_clas_bin)
 
     """ Generate classifiers w/ cross-validation and ROC """
-    plot_ROC(clas_models['random_forest'], X_clas_bin, y_clas_bin, cv_fold=args_cv)
+    for k, model in clas_models.items():
+        plot_ROC(model, X_clas_bin, y_clas_bin, cv_fold=args_cv, png_filename=str(k))
+
 
     # TODO ROC for multiclass classifier and ROC for regression models
 
