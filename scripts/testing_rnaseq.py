@@ -79,7 +79,6 @@ if __name__ == "__main__":
     train_without_cv_all(X,y)
     print("Trained on all models w/o cv")
 
-
     """ Generate classifiers w/o cross-validation """
     print("Classifiers:")
     classifiers = train_without_cv_all(X, y)
@@ -137,6 +136,5 @@ if __name__ == "__main__":
     ax.w_yaxis.set_ticklabels([])
     ax.w_zaxis.set_ticklabels([])
     plt.show()
-
 
     print("Analysis complete.")
