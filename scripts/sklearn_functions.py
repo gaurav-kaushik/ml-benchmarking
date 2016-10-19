@@ -14,7 +14,7 @@ Helper functions for scikit-learn
         split data (no cv) and train model
 
     : train_without_cv_all
-        split data (no cv) and train all models in a dict (e.g. classifiers())
+        split data (no cv) and train all models in a dict (e.g. classification_models())
 
     : add_noisy_features
         add additional noisy features to X
@@ -28,7 +28,7 @@ Helper functions for scikit-learn
     : regression_models
         returns dict of common regression models
 
-    : classifiers
+    : classification_models
         returns dict of common classification models
 ---------------------------------------------------- """
 from __future__ import division, print_function
@@ -88,15 +88,26 @@ def autotune_alpha(model, X_train, X_test, y_train, y_test):
 
 """ Training Functions """
 
-def train_without_cv_all(models, X, y):
+def train_without_cv_all(X, y):
+
+    # Split the data
     X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+    # Train all models in classification_models()
+    models = classification_models()
     for k, v in models.items():
         print("\t", k, ":", "%0.2f, %0.2f" % (score_model(v.fit(X_train, y_train), X_test, y_test)))
     return models
 
-def train_without_cv(model, X, y):
+def train_without_cv(X, y, model):
+
+    # Split the data
     X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+    # Print model info
     print("\t", model, ":", "%0.2f, %0.2f" % (score_model(model.fit(X_train, y_train), X_test, y_test)))
+
+    # TODO: consider not splitting so this can be used recursively in train_all (e.g. if not X_test ...)
     return model
 
 
@@ -113,7 +124,7 @@ def add_noise_normal(X, degree=1):
 
 """ Plots """
 
-def plot_ROC(model, X, y, cv_fold=5, png_filename=None):
+def plot_ROC(model, X, y, cv_fold, png_filename=None):
     # Set up mean true and false positive rates
     mean_tpr, mean_fpr = 0, np.linspace(0, 1, 101) # np.linspace(start, stop, datapoints)
 
@@ -180,7 +191,7 @@ def regression_models():
         'svr_poly': svm.SVR(kernel='poly')
     }
 
-def classifiers():
+def classification_models():
     """
     Classification Models
     """
